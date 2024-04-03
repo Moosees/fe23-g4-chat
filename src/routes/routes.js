@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { getChannel } from "../controller/channel.js";
+import ChannelController from "../controller/channelController.js";
 
 const router = Router();
 
-router.get('/broadcast', getChannel);
+router.put('/channel', ChannelController.createChannel);
 
 export default router;
