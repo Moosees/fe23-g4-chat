@@ -1,0 +1,15 @@
+{
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"editor.indentSize": "tabSize",
+	"editor.wordWrap": "on",
+	"files.insertFinalNewline": true,
+	"javascript.format.semicolons": "insert",
+	"javascript.preferences.importModuleSpecifierEnding": "js",
+	"[javascript]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+}
