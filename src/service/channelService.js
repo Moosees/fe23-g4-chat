@@ -4,6 +4,10 @@ const createChannel = async (name, description) => {
 	return await Channel.create({ name, description });
 };
 
-const ChannelService = { createChannel };
+const getAllChannels = async () => {
+	return await Channel.find({});
+};
+
+const ChannelService = { createChannel, getAllChannels };
 
 export default ChannelService;

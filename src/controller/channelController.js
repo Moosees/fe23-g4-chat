@@ -11,6 +11,15 @@ const createChannel = async (req, res) => {
 	}
 };
 
-const ChannelController = { createChannel };
+const getAllChannels = async (req, res) => {
+	try {
+		const channels = await ChannelService.getAllChannels();
+		res.json(channels);
+	} catch (error) {
+		res.status(500).send();
+	}
+};
+
+const ChannelController = { createChannel, getAllChannels };
 
 export default ChannelController;
