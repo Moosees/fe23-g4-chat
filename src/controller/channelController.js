@@ -5,9 +5,12 @@ const createChannel = async (req, res) => {
 
 	try {
 		await ChannelService.createChannel(name, description);
+		
 		res.status(201).send();
 	} catch (error) {
-		res.status(400).send(); // needs better error handling
+		if (error.code === 11000) return res.status(400).send({ error: "Channel already exists" });
+
+		res.status(500).json({ error: "Something broke" }); // needs better error handling
 	}
 };
 

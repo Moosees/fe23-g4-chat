@@ -3,9 +3,14 @@ import mongoose, { Schema } from "mongoose";
 const channelSchema = new Schema({
 	name: {
 		type: String,
-		required: true
+		index: true,
+		unique: true,
+		lowercase: true,
+		required: true,
+		minLength: 4,
+		maxLength: 20
 	},
-	description: String,
+	description: { type: String, maxLength: 240 },
 	created: { type: Date, default: Date.now }
 });
 

@@ -9,7 +9,7 @@ const postMsgToChannel = async (req, res) => {
 	if (!msg) return res.status(400).send(); // empty message
 
 	try {
-		const channel = await ChannelService.getChannelByName(channelName.toLowerCase());
+		const channel = await ChannelService.getChannelByName(channelName);
 
 		if (!channel) return res.status(404).send();
 		// could be bad request, could be that channel is deleted
