@@ -2,7 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const messageSchema = new Schema(
 	{
-		name: String,
 		body: String,
 		sentAt: { type: Date, default: Date.now },
 		channelId: {
