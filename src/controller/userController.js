@@ -18,15 +18,22 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-	const { userName, passwordHash } = req.body;
+	const { userName, password } = req.body;
 
 	try {
-		const user = await UserService.loginUser(userName, passwordHash);
+		const user = await UserService.getUserByUserName(userName);
+		console.log(user);
 		if (!user) {
 			return res.status(401).json({ error: "Invalid username or password" });
 		}
 
-		res.status(200).json({ message: "Login successful", user });
+		const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+		console.log(passwordMatch);
+		if (!passwordMatch) {
+			return res.status(401).json({ error: "Invalid username or password" });
+		}
+
+		res.status(200).json({ message: "Login successful" });
 	} catch (error) {
 		console.error("Error logging in:", error);
 		res.status(500).json({ error: "Something broke" });
