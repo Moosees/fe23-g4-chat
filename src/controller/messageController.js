@@ -79,8 +79,41 @@ const postMsgToBroadcast = async (req, res) => {
     }
 };
 
+// Controller function to get messages from a specific channel
+const getMessagesByChannel = async (req, res) => {
+    const channelName = req.params.name;
+
+    // Check if channelName is provided
+    if (!channelName) {
+        return res.status(400).send({ error: "Channel name is required" });
+    }
+
+    try {
+        // Retrieve channel by name
+        const channel = await ChannelService.getChannelByName(channelName);
+
+        // Check if channel exists
+        if (!channel || !channel._id) {
+            return res.status(404).send({ error: "Channel not found or invalid" });
+        }
+
+        // Retrieve messages by channel ID
+        const messages = await MessageService.getMessagesByChannelId(channel._id);
+
+        // Check if messages array is empty
+        if (messages.length === 0) {
+            return res.status(404).send({ error: "No messages found for this channel" });
+        }
+
+        res.json(messages);
+    } catch (error) {
+        console.error("Error retrieving messages by channel:", error);
+        res.status(500).send({ error: "Server error" });
+    }
+};
+
 // Object containing all message controller functions
-const MessageController = { postMsgToChannel, getBroadcastMessages, postMsgToBroadcast };
+const MessageController = { postMsgToChannel, getBroadcastMessages, postMsgToBroadcast, getMessagesByChannel };
 
 // Exporting message controller object
 export default MessageController;

@@ -9,6 +9,9 @@ chatRoutes.post('/channel/:id', MessageController.postMsgToChannel);
 
 chatRoutes.get('/channel', ChannelController.getAllChannels);
 
+// Route for retrieving messages by channel name
+chatRoutes.get('/channel/:name', MessageController.getMessagesByChannel);
+
 // Route for retrieving messages from the broadcast channel
 chatRoutes.get('/broadcast', MessageController.getBroadcastMessages);
 
