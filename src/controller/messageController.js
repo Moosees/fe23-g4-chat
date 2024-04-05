@@ -102,7 +102,9 @@ const getMessagesByChannel = async (req, res) => {
 
         // Check if messages array is empty
         if (messages.length === 0) {
-            return res.status(404).send({ error: "No messages found for this channel" });
+            const errorMessage = `No messages found in this channel, be the first to post to the ${channelName} channel to see it here`;
+            //return res.json({ message: errorMessage });
+			return res.status(200).json({ message: errorMessage });
         }
 
         res.json(messages);
