@@ -1,15 +1,20 @@
 import 'dotenv/config';
 import express from "express";
 import mongoose from "mongoose";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { verifyUser } from './src/middleware/auth.js';
-import userRoutes from './src/routes/userRoutes.js';
 import chatRoutes from './src/routes/chatRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
 // Used  for create broadcast channel function
 //import ChannelService from "./src/service/channelService.js";
 
-const app = express();
+// express setup
 const port = 3000;
+const app = express();
+app.use(express.json());
 
+// database
 mongoose.connect(process.env.MONGODB).then(async () => {
 	console.log('mongodb connected');
 
@@ -31,11 +36,16 @@ mongoose.connect(process.env.MONGODB).then(async () => {
 
 });
 
-app.use(express.json());
+// static files (client)
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
+app.use('/', express.static(join(__dirname, 'public')));
+
+// routes
 app.use('/api', userRoutes);
 app.use('/api', verifyUser, chatRoutes);
 
+// run server
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
 });
