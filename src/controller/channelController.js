@@ -27,6 +27,7 @@ const getAllChannels = async (req, res) => {
 const deleteChannel = async (req, res) => {
 	const channelName = req.params.name;
 
+	// add better safety for broadcast channel?
 	if (channelName.length < 4 || channelName === 'broadcast') return res.status(400).send();
 
 	try {

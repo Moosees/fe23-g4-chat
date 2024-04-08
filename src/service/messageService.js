@@ -9,9 +9,9 @@ const addNewMessage = async (body, senderName, userId, channelId) => {
 
 // Function to get messages from the database based on the channel ID
 // - basic get-function added
-async function getMessagesByChannelId(channelId) {
+const getMessagesByChannelId = async (channelId) => {
 	return await Message.find({ channelId });
-}
+};
 
 const deleteAllMessageInChannel = async (channelId) => {
 	const result = await Message.deleteMany({ channelId });
