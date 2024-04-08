@@ -26,14 +26,17 @@ const getAllChannels = async (req, res) => {
 
 const deleteChannel = async (req, res) => {
 	const channelName = req.params.name;
+	const userId = req.user.id;
 
 	// add better safety for broadcast channel?
 	if (channelName.length < 4 || channelName === 'broadcast') return res.status(400).send();
 
 	try {
 		const channel = await ChannelService.getChannelByName(channelName);
-		
+
 		if (!channel) return res.status(404).json({ error: 'Channel not found' });
+
+		if (channel.owner !== userId) return res.status(403).json({ error: "You are not authorized to delete this channel" });
 
 		// use transaction? https://www.mongodb.com/docs/manual/core/transactions/
 		await ChannelService.deleteChannelById(channel._id);

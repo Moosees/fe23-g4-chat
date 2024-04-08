@@ -1,7 +1,7 @@
 import Channel from "../model/channelModel.js";
 
-const createChannel = async (name, description) => {
-	return await Channel.create({ name, description });
+const createChannel = async (name, description, ownerId) => {
+	return await Channel.create({ name, description, owner: ownerId });
 };
 
 const getAllChannels = async () => {

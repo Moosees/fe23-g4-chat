@@ -1,4 +1,5 @@
 // Importing the Message model from its location
+import Channel from "../model/channelModel.js";
 import Message from "../model/messageModel.js";
 
 // Function to add a new message to the database
@@ -13,7 +14,13 @@ const getMessagesByChannelId = async (channelId) => {
 	return await Message.find({ channelId });
 };
 
-const deleteAllMessageInChannel = async (channelId) => {
+const deleteAllMessageInChannel = async (channelId, userId) => {
+
+	const channel = await Channel.findById(channelId);
+	if (!channel || channel.owner !== userId) {
+		throw new Error('User is not authorized to delete messages in this channel');
+	}
+
 	const result = await Message.deleteMany({ channelId });
 
 	if (!result.acknowledged) throw new Error('something went wrong');
