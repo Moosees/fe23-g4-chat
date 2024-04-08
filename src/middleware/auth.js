@@ -28,3 +28,11 @@ export const verifyUser = async (req, res, next) => {
 	}
 
 };
+
+export const requiresLoggedIn = (req, res, next) => {
+	if (res.locals.anonymous) {
+		return res.status(401).json({ error: 'Please login in and try again' });
+	}
+
+	next();
+};

@@ -3,9 +3,10 @@ import express from "express";
 import mongoose from "mongoose";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { verifyUser } from './src/middleware/auth.js';
+import { requiresLoggedIn, verifyUser } from './src/middleware/auth.js';
 import chatRoutes from './src/routes/chatRoutes.js';
 import userRoutes from './src/routes/userRoutes.js';
+import publicRoutes from "./src/routes/publicRoutes.js";
 // Used  for create broadcast channel function
 //import ChannelService from "./src/service/channelService.js";
 
@@ -43,7 +44,8 @@ app.use('/', express.static(join(__dirname, 'public')));
 
 // routes
 app.use('/api', userRoutes);
-app.use('/api', verifyUser, chatRoutes);
+app.use('/api', verifyUser, publicRoutes);
+app.use('/api', verifyUser, requiresLoggedIn, chatRoutes);
 
 // run server
 app.listen(port, () => {
