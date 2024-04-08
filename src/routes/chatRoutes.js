@@ -18,5 +18,7 @@ chatRoutes.get('/broadcast', MessageController.getBroadcastMessages);
 // Route for posting messages to the broadcast channel
 chatRoutes.post('/broadcast', MessageController.postMsgToBroadcast);
 
+chatRoutes.delete('/channel/:name', ChannelController.deleteChannel);
+
 
 export default chatRoutes;

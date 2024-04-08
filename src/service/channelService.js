@@ -12,6 +12,12 @@ const getChannelByName = async (name) => {
 	return await Channel.findOne({ name });
 };
 
-const ChannelService = { createChannel, getAllChannels, getChannelByName };
+const deleteChannelById = async (id) => {
+	const { acknowledged, deletedCount } = await Channel.deleteOne({ _id: id });
+
+	if (!acknowledged || deletedCount === 0) throw new Error('Could not delete channel');
+};
+
+const ChannelService = { createChannel, getAllChannels, getChannelByName, deleteChannelById };
 
 export default ChannelService;

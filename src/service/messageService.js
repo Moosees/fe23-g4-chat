@@ -4,7 +4,7 @@ import Message from "../model/messageModel.js";
 // Function to add a new message to the database
 // - changed to work with Broadcast channel
 const addNewMessage = async (body, senderName, userId, channelId) => {
-    return await Message.create({ body, senderName, userId, channelId });
+	return await Message.create({ body, senderName, userId, channelId });
 };
 
 // Function to get messages from the database based on the channel ID
@@ -13,8 +13,13 @@ async function getMessagesByChannelId(channelId) {
 	return await Message.find({ channelId });
 }
 
+const deleteAllMessageInChannel = async (channelId) => {
+	const result = await Message.deleteMany({ channelId });
 
-const MessageService = { addNewMessage, getMessagesByChannelId };
+	if (!result.acknowledged) throw new Error('something went wrong');
+};
 
+const MessageService = { addNewMessage, getMessagesByChannelId, deleteAllMessageInChannel };
 
 export default MessageService;
+

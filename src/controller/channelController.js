@@ -1,4 +1,5 @@
 import ChannelService from "../service/channelService.js";
+import MessageService from "../service/messageService.js";
 
 const createChannel = async (req, res) => {
 	const { name, description } = req.body;
@@ -23,6 +24,28 @@ const getAllChannels = async (req, res) => {
 	}
 };
 
-const ChannelController = { createChannel, getAllChannels };
+const deleteChannel = async (req, res) => {
+	const channelName = req.params.name;
+
+	if (channelName.length < 4 || channelName === 'broadcast') return res.status(400).send();
+
+	try {
+		const channel = await ChannelService.getChannelByName(channelName);
+		
+		if (!channel) return res.status(404).json({ error: 'Channel not found' });
+
+		// use transaction? https://www.mongodb.com/docs/manual/core/transactions/
+		await ChannelService.deleteChannelById(channel._id);
+
+		await MessageService.deleteAllMessageInChannel(channel._id);
+
+		res.status(200).send();
+	} catch (error) {
+		console.log(error);
+		res.status(500).send();
+	}
+};
+
+const ChannelController = { createChannel, getAllChannels, deleteChannel };
 
 export default ChannelController;
