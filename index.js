@@ -70,8 +70,17 @@ mongoose.connect(process.env.MONGODB).then(async () => {
 // static files (client)
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// static files (client)
 app.use('/', express.static(join(__dirname, 'public')));
+
+// locally hosted npm packages
+app.get('/socket', (req, res) => {
+	const filename = process.env.NODE_ENV === 'production' ? 'socket.io.min.js' : 'socket.io.js';
+	res.sendFile(join(__dirname, 'node_modules/socket.io/client-dist', filename));
+});
+app.get('/axios', (req, res) => {
+	const filename = process.env.NODE_ENV === 'production' ? 'axios.min.js' : 'axios.js';
+	res.sendFile(join(__dirname, 'node_modules/axios/dist', filename));
+});
 
 // routes
 app.use('/api', userRoutes);

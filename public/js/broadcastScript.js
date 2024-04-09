@@ -1,3 +1,6 @@
+// test axios and socket
+console.log({ io, axios });
+
 // Function to handle form submission
 async function handleSubmit(event) {
 	// Prevent the default form submission behavior
