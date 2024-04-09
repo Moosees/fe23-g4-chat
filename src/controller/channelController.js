@@ -37,7 +37,7 @@ const getAllChannels = async (req, res) => {
 };
 
 const deleteChannel = async (req, res) => {
-	const channelName = req.params.name;
+	const { channelName } = req.params;
 	const userId = res.locals.user._id;
 
 	// Add better safety for broadcast channel
