@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <!-- Define character set and viewport  -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Title of the webpage -->
-    <title>Home - Broadcast Messages</title>
-    <!-- Link to the CSS stylesheet -->
-    <link type="text/css" rel="stylesheet" href="css/style.css">
+	<!-- Define character set and viewport  -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Title of the webpage -->
+	<title>Home - Broadcast Messages</title>
+	<!-- Link to the CSS stylesheet -->
+	<link type="text/css" rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-    <!-- Main heading -->
-    <h1>Broadcast Messages</h1>
-    <!-- Container for displaying messages -->
-    <div id="messages-container"></div>
+	<!-- Main heading -->
+	<h1>Broadcast Messages</h1>
+	<!-- Container for displaying messages -->
+	<div id="messages-container"></div>
 
-    <!-- Section for posting a new message -->
-    <h2>Post a New Message</h2>
-    <!-- Form for submitting new messages -->
-    <form id="message-form">
-        <!-- Input field for entering sender's name (optional) -->
-        <label for="sender-name">Your Name: (Optional)</label>
-        <input type="text" id="sender-name" name="sender-name">
-        <!-- Textarea for entering the message content (required) -->
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required></textarea>
-        <!-- Button to submit the message -->
-        <button type="submit">Send Message</button>
-    </form>
+	<!-- Section for posting a new message -->
+	<h2>Post a New Message</h2>
+	<!-- Form for submitting new messages -->
+	<form id="message-form">
+		<!-- Input field for entering sender's name (optional) -->
+		<label for="sender-name">Your Name: (Optional)</label>
+		<input type="text" id="sender-name" name="sender-name">
+		<!-- Textarea for entering the message content (required) -->
+		<label for="message">Message:</label>
+		<textarea id="message" name="message" required></textarea>
+		<!-- Button to submit the message -->
+		<button type="submit">Send Message</button>
+	</form>
 
-    <!-- External JavaScript file for handling message sending and display -->
-    <script src="js/broadcastScript.js"></script>
+	<!-- External JavaScript file for handling message sending and display -->
+	<script src="js/broadcastScript.js"></script>
 </body>
+
 </html>

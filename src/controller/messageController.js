@@ -6,11 +6,11 @@ import MessageService from "../service/messageService.js";
 
 // Configuration for sanitize-html to disallow formatting tags
 const htmlSanitizeOptions = {
-    allowedTags: [], // Disallow all tags
-    allowedAttributes: {}, // Disallow all attributes
-    exclusiveFilter: (frame) => {
-        return frame.tag === 'strong' || frame.tag === 'em' || frame.tag === 'u'; // Allow only specific formatting tags
-    }
+	allowedTags: [], // Disallow all tags
+	allowedAttributes: {}, // Disallow all attributes
+	exclusiveFilter: (frame) => {
+		return frame.tag === 'strong' || frame.tag === 'em' || frame.tag === 'u'; // Allow only specific formatting tags
+	}
 };
 
 // Controller function to post a message to a specific channel
@@ -37,7 +37,7 @@ const postMsgToChannel = async (req, res) => {
 
 		// Prevent HTML tags from being rendered using sanitize-html
 		const cleanedMsg = sanitizeHtml(sanitizedMsg, htmlSanitizeOptions);
-		const cleanedSenderName = sanitizeHtml(sanitizedSenderName, htmlSanitizeOptions)
+		const cleanedSenderName = sanitizeHtml(sanitizedSenderName, htmlSanitizeOptions);
 
 		// If channel is 'broadcast' and senderName is provided, add message with senderName
 		if (channelName === 'broadcast' && senderName) {
@@ -86,44 +86,44 @@ const getBroadcastMessages = async (req, res) => {
 
 // Controller function to post a message to the broadcast channel
 const postMsgToBroadcast = async (req, res) => {
-    // Check for validation errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
+	// Check for validation errors
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
 
-    const { msg, senderName } = req.body;
-    const userId = null; // until we have auth in place
+	const { msg, senderName } = req.body;
+	const userId = null; // until we have auth in place
 
-    // Checking if message is empty
-    if (!msg) return res.status(400).send({ error: "Message content is required" });
+	// Checking if message is empty
+	if (!msg) return res.status(400).send({ error: "Message content is required" });
 
-    try {
-        // Retrieving broadcast channel
-        const broadcastChannel = await ChannelService.getChannelByName('broadcast');
+	try {
+		// Retrieving broadcast channel
+		const broadcastChannel = await ChannelService.getChannelByName('broadcast');
 
-        // If broadcast channel doesn't exist, return 404 error
-        if (!broadcastChannel) return res.status(404).send({ error: "Broadcast channel not found" });
+		// If broadcast channel doesn't exist, return 404 error
+		if (!broadcastChannel) return res.status(404).send({ error: "Broadcast channel not found" });
 
-        // XSS protection using xss library
-        const sanitizedMsg = xss(msg);
-        const sanitizedSenderName = xss(senderName || "Anonymous");
+		// XSS protection using xss library
+		const sanitizedMsg = xss(msg);
+		const sanitizedSenderName = xss(senderName || "Anonymous");
 
-        // Prevent HTML tags from being rendered using sanitize-html
-        const cleanedMsg = sanitizeHtml(sanitizedMsg, {
-            allowedTags: [], // Disallow all tags
-            allowedAttributes: {} // Disallow all attributes
-        });
-        const cleanedSenderName = sanitizeHtml(sanitizedSenderName);
+		// Prevent HTML tags from being rendered using sanitize-html
+		const cleanedMsg = sanitizeHtml(sanitizedMsg, {
+			allowedTags: [], // Disallow all tags
+			allowedAttributes: {} // Disallow all attributes
+		});
+		const cleanedSenderName = sanitizeHtml(sanitizedSenderName);
 
-        await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, broadcastChannel._id);
+		await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, broadcastChannel._id);
 
-        // Sending success response
-        res.status(201).send();
-    } catch (error) {
-        // Handling errors and sending 500 error
-        res.status(500).send({ error: "Server error" });
-    }
+		// Sending success response
+		res.status(201).send();
+	} catch (error) {
+		// Handling errors and sending 500 error
+		res.status(500).send({ error: "Server error" });
+	}
 };
 
 // Controller function to get messages from a specific channel

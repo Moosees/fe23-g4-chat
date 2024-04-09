@@ -6,10 +6,34 @@
 	"files.insertFinalNewline": true,
 	"javascript.format.semicolons": "insert",
 	"javascript.preferences.importModuleSpecifierEnding": "js",
+	"prettier.enable": false,
+	"prettier.requireConfig": true,
+	"prettier.useTabs": true,
 	"[javascript]": {
 		"editor.defaultFormatter": "vscode.typescript-language-features"
 	},
 	"[javascriptreact]": {
 		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"[html]": {
+		"editor.defaultFormatter": "vscode.html-language-features"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "vscode.css-language-features"
+	},
+	"[scss]": {
+		"editor.defaultFormatter": "vscode.css-language-features"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "vscode.json-language-features"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "vscode.json-language-features"
 	},
 }
