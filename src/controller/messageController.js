@@ -1,9 +1,25 @@
+import { validationResult } from "express-validator";
+import xss from 'xss';
+import sanitizeHtml from 'sanitize-html';
 import ChannelService from "../service/channelService.js";
 import MessageService from "../service/messageService.js";
 
+// Configuration for sanitize-html to disallow formatting tags
+const htmlSanitizeOptions = {
+    allowedTags: [], // Disallow all tags
+    allowedAttributes: {}, // Disallow all attributes
+    exclusiveFilter: (frame) => {
+        return frame.tag === 'strong' || frame.tag === 'em' || frame.tag === 'u'; // Allow only specific formatting tags
+    }
+};
 
 // Controller function to post a message to a specific channel
 const postMsgToChannel = async (req, res) => {
+	// Check for validation errors
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
 	const channelName = req.params.id;
 	const { msg, senderName } = req.body;
 	const userId = null; // until we have auth in place
@@ -14,15 +30,22 @@ const postMsgToChannel = async (req, res) => {
 		const channel = await ChannelService.getChannelByName(channelName);
 
 		if (!channel) return res.status(404).send();
-		// could be bad request, could be that channel is deleted
+
+		// XSS protection using xss library
+		const sanitizedMsg = xss(msg);
+		const sanitizedSenderName = xss(senderName);
+
+		// Prevent HTML tags from being rendered using sanitize-html
+		const cleanedMsg = sanitizeHtml(sanitizedMsg, htmlSanitizeOptions);
+		const cleanedSenderName = sanitizeHtml(sanitizedSenderName, htmlSanitizeOptions)
 
 		// If channel is 'broadcast' and senderName is provided, add message with senderName
 		if (channelName === 'broadcast' && senderName) {
-			await MessageService.addNewMessage(msg, senderName, userId, channel._id);
+			await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, channel._id);
 		} else {
 			// If senderName is not provided, return 400 error
 			if (!senderName) return res.status(400).send({ error: "Name is required" });
-			await MessageService.addNewMessage(msg, senderName, userId, channel._id);
+			await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, channel._id);
 		}
 
 		res.status(200).send();
@@ -44,8 +67,16 @@ const getBroadcastMessages = async (req, res) => {
 
 		// Retrieving messages from broadcast channel
 		const messages = await MessageService.getMessagesByChannelId(broadcastChannel._id);
+
+		// Sanitize messages to prevent XSS and HTML injection
+		const sanitizedMessages = messages.map(message => ({
+			body: sanitizeHtml(xss(message.body), htmlSanitizeOptions),
+			senderName: sanitizeHtml(xss(message.senderName), htmlSanitizeOptions),
+			sentAt: message.sentAt
+		}));
+
 		// Sending retrieved messages as JSON response
-		res.json(messages);
+		res.json(sanitizedMessages);
 	} catch (error) {
 		// Handling errors and sending 500 error
 		console.error("Error retrieving broadcast messages:", error);
@@ -53,30 +84,46 @@ const getBroadcastMessages = async (req, res) => {
 	}
 };
 
-
 // Controller function to post a message to the broadcast channel
 const postMsgToBroadcast = async (req, res) => {
-	const { msg, senderName } = req.body;
-	const userId = null; // until we have auth in place
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
-	// Checking if message is empty
-	if (!msg) return res.status(400).send({ error: "Message content is required" });
+    const { msg, senderName } = req.body;
+    const userId = null; // until we have auth in place
 
-	try {
-		// Retrieving broadcast channel
-		const broadcastChannel = await ChannelService.getChannelByName('broadcast');
+    // Checking if message is empty
+    if (!msg) return res.status(400).send({ error: "Message content is required" });
 
-		// If broadcast channel doesn't exist, return 404 error
-		if (!broadcastChannel) return res.status(404).send({ error: "Broadcast channel not found" });
+    try {
+        // Retrieving broadcast channel
+        const broadcastChannel = await ChannelService.getChannelByName('broadcast');
 
-		// Adding new message to the broadcast channel
-		await MessageService.addNewMessage(msg, senderName || "Anonymous", userId, broadcastChannel._id);
-		// Sending success response
-		res.status(201).send();
-	} catch (error) {
-		// Handling errors and sending 500 error
-		res.status(500).send({ error: "Server error" });
-	}
+        // If broadcast channel doesn't exist, return 404 error
+        if (!broadcastChannel) return res.status(404).send({ error: "Broadcast channel not found" });
+
+        // XSS protection using xss library
+        const sanitizedMsg = xss(msg);
+        const sanitizedSenderName = xss(senderName || "Anonymous");
+
+        // Prevent HTML tags from being rendered using sanitize-html
+        const cleanedMsg = sanitizeHtml(sanitizedMsg, {
+            allowedTags: [], // Disallow all tags
+            allowedAttributes: {} // Disallow all attributes
+        });
+        const cleanedSenderName = sanitizeHtml(sanitizedSenderName);
+
+        await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, broadcastChannel._id);
+
+        // Sending success response
+        res.status(201).send();
+    } catch (error) {
+        // Handling errors and sending 500 error
+        res.status(500).send({ error: "Server error" });
+    }
 };
 
 // Controller function to get messages from a specific channel
@@ -100,14 +147,20 @@ const getMessagesByChannel = async (req, res) => {
 		// Retrieve messages by channel ID
 		const messages = await MessageService.getMessagesByChannelId(channel._id);
 
+		// Sanitize messages to prevent XSS and HTML injection
+		const sanitizedMessages = messages.map(message => ({
+			body: sanitizeHtml(xss(message.body), htmlSanitizeOptions),
+			senderName: sanitizeHtml(xss(message.senderName), htmlSanitizeOptions),
+			sentAt: message.sentAt
+		}));
+
 		// Check if messages array is empty
 		if (messages.length === 0) {
 			const errorMessage = `No messages found in this channel, be the first to post to the ${channelName} channel to see it here`;
-			//return res.json({ message: errorMessage });
 			return res.status(200).json({ message: errorMessage });
 		}
 
-		res.json(messages);
+		res.json(sanitizedMessages);
 	} catch (error) {
 		console.error("Error retrieving messages by channel:", error);
 		res.status(500).send({ error: "Server error" });
