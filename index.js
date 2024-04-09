@@ -40,7 +40,11 @@ mongoose.connect(process.env.MONGODB).then(async () => {
 // static files (client)
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-app.use('/', express.static(join(__dirname, 'public')));
+// static files (client)
+app.use('/public', express.static(join(__dirname, 'public')));
+app.use('/public/broadcast', express.static(join(__dirname, 'public/broadcast.html')));
+
+
 
 // routes
 app.use('/api', userRoutes);
