@@ -7,32 +7,55 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Title of the webpage -->
 	<title>Home - Broadcast Messages</title>
+
+	<!-- WEBSOCKETS THINGYS -->
+	<!-- styles -->
+	<link href="style.css" rel="stylesheet">
+	<!-- socket.io -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"
+		integrity="sha512-11t8Q+vY9JlCrr+PveZKTYJq8n7O09Y5X/pk/aMd3vJugSvu4xOunGEUzaADqL3I8cZKE/pBwwCfXzDkRJh2sQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="app.js" defer></script>
+	<!-- END WEBSOCKETS -->
+
+	<!-- OTHER THINGYS -->
 	<!-- Link to the CSS stylesheet -->
 	<link type="text/css" rel="stylesheet" href="css/style.css">
+	<!-- External JavaScript file for handling message sending and display -->
+	<script src="js/broadcastScript.js" defer></script>
+	<!-- END OTHER -->
 </head>
 
 <body>
-	<!-- Main heading -->
-	<h1>Broadcast Messages</h1>
-	<!-- Container for displaying messages -->
-	<div id="messages-container"></div>
+	<section id="WEBSOCKETS">
+		<form>
+			<input type="text" placeholder="Your message" />
+			<button>Send</button>
+		</form>
+		<ul></ul>
+		<p class="activity"></p>
+	</section>
 
-	<!-- Section for posting a new message -->
-	<h2>Post a New Message</h2>
-	<!-- Form for submitting new messages -->
-	<form id="message-form">
-		<!-- Input field for entering sender's name (optional) -->
-		<label for="sender-name">Your Name: (Optional)</label>
-		<input type="text" id="sender-name" name="sender-name">
-		<!-- Textarea for entering the message content (required) -->
-		<label for="message">Message:</label>
-		<textarea id="message" name="message" required></textarea>
-		<!-- Button to submit the message -->
-		<button type="submit">Send Message</button>
-	</form>
+	<section id="OTHER">
+		<!-- Main heading -->
+		<h1>Broadcast Messages</h1>
+		<!-- Container for displaying messages -->
+		<div id="messages-container"></div>
 
-	<!-- External JavaScript file for handling message sending and display -->
-	<script src="js/broadcastScript.js"></script>
+		<!-- Section for posting a new message -->
+		<h2>Post a New Message</h2>
+		<!-- Form for submitting new messages -->
+		<form id="message-form">
+			<!-- Input field for entering sender's name (optional) -->
+			<label for="sender-name">Your Name: (Optional)</label>
+			<input type="text" id="sender-name" name="sender-name">
+			<!-- Textarea for entering the message content (required) -->
+			<label for="message">Message:</label>
+			<textarea id="message" name="message" required></textarea>
+			<!-- Button to submit the message -->
+			<button type="submit">Send Message</button>
+		</form>
+	</section>
 </body>
 
 </html>

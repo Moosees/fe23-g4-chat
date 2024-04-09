@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
-		"start": "nodemon index.js",
+		"start": "nodemon .",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
@@ -22,6 +22,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"mongoose": "^8.2.4",
 		"sanitize-html": "^2.13.0",
-		"xss": "^1.0.15"
+		"xss": "^1.0.15",
+		"socket.io": "^4.7.5"
 	}
 }

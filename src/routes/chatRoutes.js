@@ -14,5 +14,4 @@ chatRoutes.get('/channel/:name', MessageController.getMessagesByChannel);
 
 chatRoutes.delete('/channel/:name', ChannelController.deleteChannel);
 
-
 export default chatRoutes;
