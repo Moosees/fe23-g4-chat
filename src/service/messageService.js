@@ -1,4 +1,5 @@
 // Importing the Message model from its location
+import Channel from "../model/channelModel.js";
 import Message from "../model/messageModel.js";
 
 // Function to add a new message to the database
@@ -14,6 +15,7 @@ const getMessagesByChannelId = async (channelId) => {
 };
 
 const deleteAllMessageInChannel = async (channelId) => {
+
 	const result = await Message.deleteMany({ channelId });
 
 	if (!result.acknowledged) throw new Error('something went wrong');
