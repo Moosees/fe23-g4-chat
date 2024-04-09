@@ -3,9 +3,10 @@ import MessageService from "../service/messageService.js";
 
 const createChannel = async (req, res) => {
 	const { name, description } = req.body;
+	const ownerId = res.locals.user._id;
 
 	try {
-		await ChannelService.createChannel(name, description);
+		await ChannelService.createChannel(name, description, ownerId);
 
 		res.status(201).send();
 	} catch (error) {
@@ -26,6 +27,7 @@ const getAllChannels = async (req, res) => {
 
 const deleteChannel = async (req, res) => {
 	const channelName = req.params.name;
+	const userId = res.locals.user._id;
 
 
 	// add better safety for broadcast channel?
@@ -36,7 +38,7 @@ const deleteChannel = async (req, res) => {
 
 		if (!channel) return res.status(404).json({ error: 'Channel not found' });
 
-		if (channel.owner !== userId) return res.status(403).json({ error: "You are not authorized to delete this channel" });
+		if (channel.owner.toString() !== userId) return res.status(403).json({ error: "You are not authorized to delete this channel" });
 
 		// use transaction? https://www.mongodb.com/docs/manual/core/transactions/
 		await ChannelService.deleteChannelById(channel._id);
