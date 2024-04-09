@@ -20,7 +20,7 @@ const postMsgToChannel = async (req, res) => {
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() });
 	}
-	const channelName = req.params.id;
+	const { channelName } = req.params;
 	const { msg, senderName } = req.body;
 	const userId = null; // until we have auth in place
 
@@ -128,7 +128,7 @@ const postMsgToBroadcast = async (req, res) => {
 
 // Controller function to get messages from a specific channel
 const getMessagesByChannel = async (req, res) => {
-	const channelName = req.params.name;
+	const { channelName } = req.params;
 
 	// Check if channelName is provided
 	if (!channelName) {
