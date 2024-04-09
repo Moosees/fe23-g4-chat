@@ -2,7 +2,14 @@ import UserService from "../service/userService.js";
 import { verifyToken } from "../utils/jwt.js";
 
 export const verifyUser = async (req, res, next) => {
-	const { token } = req.body;
+
+	const authHeader = req.headers.authorization;
+	if (!authHeader || !authHeader.startsWith("Bearer ")) {
+		res.status(401).json({ error: "Bearer token is required" });
+		return;
+	}
+
+	const token = authHeader.split(" ")[1];
 
 	if (!token) {
 		// anonymous user stuff goes here
