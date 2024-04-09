@@ -14,12 +14,7 @@ const getMessagesByChannelId = async (channelId) => {
 	return await Message.find({ channelId });
 };
 
-const deleteAllMessageInChannel = async (channelId, userId) => {
-
-	const channel = await Channel.findById(channelId);
-	if (!channel || channel.owner !== userId) {
-		throw new Error('User is not authorized to delete messages in this channel');
-	}
+const deleteAllMessageInChannel = async (channelId) => {
 
 	const result = await Message.deleteMany({ channelId });
 
