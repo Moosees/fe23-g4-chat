@@ -38,7 +38,7 @@ const deleteChannel = async (req, res) => {
 
 		if (!channel) return res.status(404).json({ error: 'Channel not found' });
 
-		if (channel.owner.toString() !== userId) return res.status(403).json({ error: "You are not authorized to delete this channel" });
+		if (!channel.owner.equals(userId)) return res.status(403).json({ error: "You are not authorized to delete this channel" });
 
 		// use transaction? https://www.mongodb.com/docs/manual/core/transactions/
 		await ChannelService.deleteChannelById(channel._id);
