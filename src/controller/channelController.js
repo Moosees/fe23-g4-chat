@@ -32,7 +32,7 @@ const deleteChannel = async (req, res) => {
 
 	try {
 		const channel = await ChannelService.getChannelByName(channelName);
-		
+
 		if (!channel) return res.status(404).json({ error: 'Channel not found' });
 
 		// use transaction? https://www.mongodb.com/docs/manual/core/transactions/

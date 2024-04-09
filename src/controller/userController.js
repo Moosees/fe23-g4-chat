@@ -24,13 +24,13 @@ const loginUser = async (req, res) => {
 
 	try {
 		const user = await UserService.getUserByUserName(userName);
-		
+
 		if (!user) {
 			return res.status(401).json({ error: "Invalid username or password" });
 		}
 
 		const passwordMatch = await bcrypt.compare(password, user.passwordHash);
-		
+
 		if (!passwordMatch) {
 			return res.status(401).json({ error: "Invalid username or password" });
 		}
