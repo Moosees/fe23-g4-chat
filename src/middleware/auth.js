@@ -21,6 +21,7 @@ export const verifyUser = async (req, res, next) => {
 		const user = await UserService.getUserByUserName(userName);
 		if (!user) return res.status(400).json({ error: 'User not found' });
 
+		console.log('auth', typeof user._id, user._id);
 		res.locals.anonymous = false;
 		res.locals.user = user;
 

@@ -1,15 +1,13 @@
-// Importing the Message model from its location
-import Channel from "../model/channelModel.js";
 import Message from "../model/messageModel.js";
 
 // Function to add a new message to the database
-const addNewMessage = async (body, senderName, userId, channelId) => {
-	return await Message.create({ body, senderName, userId, channelId });
+const addNewMessage = async (body, senderName, author, channel) => {
+	return await Message.create({ body, senderName, author, channel });
 };
 
 // Function to get messages from the database based on the channel ID
-const getMessagesByChannelId = async (channelId) => {
-	return await Message.find({ channelId });
+const getMessagesByChannelId = async (channel) => {
+	return await Message.find({ channel }).populate('author');
 };
 
 // delete all messages sent in a specific channel
