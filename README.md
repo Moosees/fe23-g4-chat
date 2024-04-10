@@ -18,7 +18,7 @@ npm install
 
 **MongoDB**
 
-Create a database in `[MongoDB Atlas](https://www.mongodb.com/)` and then create a `.env` file to ad your connection to the database and also your JWT secret.
+Create a database in `MongoDB Atlas` and then create a `.env` file to ad your connection to the database and also your JWT secret.
 
 **Start the server**
 
