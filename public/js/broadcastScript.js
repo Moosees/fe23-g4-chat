@@ -1,3 +1,7 @@
+// channel switcher for debugging
+// const channelAddress = '/api/channel/newtest';
+const channelAddress = '/api/broadcast';
+
 // socket global variable
 const socket = io('ws://localhost:3000');
 
@@ -19,7 +23,7 @@ async function handleSubmit(event) {
 
 	try {
 		// Send a POST request to the backend API with message data
-		const response = await axios.post('/api/broadcast', {
+		const response = await axios.post(channelAddress, {
 			senderName: senderNameInput.value,
 			msg: messageInput.value
 		});
@@ -55,7 +59,7 @@ function createMessageElement(message) {
 async function fetchMessages() {
 	try {
 		// Send a GET request to retrieve messages from the backend
-		const { data } = await axios.get('/api/broadcast');
+		const { data } = await axios.get(channelAddress);
 
 		// Clear the existing messages displayed in the container
 		messagesContainer.innerHTML = '';
@@ -70,7 +74,7 @@ async function fetchMessages() {
 		}
 	} catch (error) {
 		// Log an error message if there was an error fetching messages
-		console.error('Error fetching messages:', error);
+		console.error(error.response.data.error);
 	}
 }
 

@@ -5,7 +5,6 @@ import { createServer } from 'node:http';
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { requiresLoggedIn, verifyUser } from './src/middleware/auth.js';
-import { setDefaultChannel } from './src/middleware/channelName.js';
 import chatRoutes from './src/routes/chatRoutes.js';
 import publicRoutes from "./src/routes/publicRoutes.js";
 import userRoutes from './src/routes/userRoutes.js';
@@ -44,8 +43,8 @@ app.get('/axios', (req, res) => {
 
 // routes
 app.use('/api', userRoutes);
-app.use('/api', verifyUser, setDefaultChannel, publicRoutes);
-app.use('/api', verifyUser, requiresLoggedIn, setDefaultChannel, chatRoutes);
+app.use('/api', verifyUser, publicRoutes);
+app.use('/api', verifyUser, requiresLoggedIn, chatRoutes);
 
 // run server
 server.listen(port, () => {

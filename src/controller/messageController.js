@@ -15,12 +15,12 @@ const htmlSanitizeOptions = {
 
 // Controller function to post a message to a specific channel
 const postMsgToChannel = async (req, res) => {
-	console.log(req.body, res.locals)
+	console.log({ body: req.body, locals: res.locals, params: req.params });
 	const { msg } = req.body;
 	if (!msg) return res.status(400).json({ error: 'Message cannot be empty' }); // empty message
 
 	const { userId, senderName } = res.locals.user;
-	const { channelName } = res.locals;
+	const channelName = req.params.channelName || 'broadcast';
 
 	try {
 		const channel = await ChannelService.getChannelByName(channelName);
@@ -50,7 +50,8 @@ const postMsgToChannel = async (req, res) => {
 
 // Controller function to get messages from a specific channel
 const getMessagesByChannel = async (req, res) => {
-	const { channelName } = res.locals;
+	console.log({ body: req.body, locals: res.locals, params: req.params });
+	const channelName = req.params.channelName || 'broadcast';
 	// xss through channelName?
 
 	try {
