@@ -8,10 +8,12 @@
 	<!-- Title of the webpage -->
 	<title>Home - Broadcast Messages</title>
 
-	<!-- Axios -->
+	<!-- Axios and socket.io -->
 	<script src="axios" defer></script>
-	<!-- socket.io -->
 	<script src="socket" defer></script>
+
+	<!-- Login script -->
+	<script src="js/loginScript.js" defer></script>
 
 	<!-- Link to the CSS stylesheet -->
 	<link type="text/css" rel="stylesheet" href="css/style.css">
@@ -20,8 +22,19 @@
 </head>
 
 <body>
+	<!-- Section for user login -->
+	<section>
+		<h2>Login</h2>
+		<form id="login-form">
+			<label for="login-username">Username:</label>
+			<input type="text" id="login-username" name="login-username" required>
+			<label for="login-password">Password:</label>
+			<input type="password" id="login-password" name="login-password" required>
+			<button type="submit">Login</button>
+		</form>
+	</section>
 
-	<section id="OTHER">
+	<section>
 		<!-- Main heading -->
 		<h1>Broadcast Messages</h1>
 		<!-- Container for displaying messages -->
