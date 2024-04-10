@@ -15,12 +15,11 @@ const htmlSanitizeOptions = {
 
 // Controller function to post a message to a specific channel
 const postMsgToChannel = async (req, res) => {
-	console.log(req.body, res.locals)
 	const { msg } = req.body;
 	if (!msg) return res.status(400).json({ error: 'Message cannot be empty' }); // empty message
 
-	const { userId, senderName } = res.locals.user;
-	const { channelName } = res.locals;
+	const { senderName, _id: userId } = res.locals.user;
+	const channelName = req.params.channelName || 'broadcast';
 
 	try {
 		const channel = await ChannelService.getChannelByName(channelName);
@@ -37,6 +36,7 @@ const postMsgToChannel = async (req, res) => {
 
 		// If senderName is not provided, return 400 error
 		if (!senderName) return res.status(400).send({ error: "Name is required" });
+
 		const dbRes = await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, channel._id);
 
 		// send message to all clients chat history
@@ -50,13 +50,12 @@ const postMsgToChannel = async (req, res) => {
 
 // Controller function to get messages from a specific channel
 const getMessagesByChannel = async (req, res) => {
-	const { channelName } = res.locals;
+	const channelName = req.params.channelName || 'broadcast';
 	// xss through channelName?
 
 	try {
 		// Retrieve channel by name
 		const channel = await ChannelService.getChannelByName(channelName);
-		console.log(channel);
 
 		// Check if channel exists
 		if (!channel || !channel._id) {
@@ -67,11 +66,15 @@ const getMessagesByChannel = async (req, res) => {
 		const messages = await MessageService.getMessagesByChannelId(channel._id);
 
 		// Sanitize messages to prevent XSS and HTML injection
-		const sanitizedMessages = messages.map(message => ({
-			body: sanitizeHtml(xss(message.body), htmlSanitizeOptions),
-			senderName: sanitizeHtml(xss(message.senderName), htmlSanitizeOptions),
-			sentAt: message.sentAt
-		}));
+		const sanitizedMessages = messages.map(message => {
+			const senderName = message.author?.senderName || sanitizeHtml(xss(message.senderName), htmlSanitizeOptions);
+
+			return ({
+				body: sanitizeHtml(xss(message.body), htmlSanitizeOptions),
+				senderName,
+				sentAt: message.sentAt
+			});
+		});
 
 		// Check if messages array is empty
 		if (messages.length === 0) {

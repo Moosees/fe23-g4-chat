@@ -6,12 +6,12 @@ const messageSchema = new Schema(
 		// Name of the sender, with a default value set to "Anonymous"
 		senderName: String, // New field for sender's name, only used to non logged in messages
 		sentAt: { type: Date, default: Date.now },
-		channelId: {
-			type: Schema.ObjectId,
+		channel: {
+			type: Schema.Types.ObjectId,
 			ref: 'Channel'
 		},
-		userId: {
-			type: Schema.ObjectId,
+		author: {
+			type: Schema.Types.ObjectId,
 			ref: 'User'
 		}
 	});

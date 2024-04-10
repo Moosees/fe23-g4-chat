@@ -15,7 +15,9 @@ const handleLogin = async (e) => {
 			const token = response.data.token;
 			axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 			alert('Login successful');
-			// Redirect or perform any other actions upon successful login
+
+			// refetch messages
+			fetchMessages();
 		}
 	} catch (error) {
 		// If there's an error during login, display an error message
