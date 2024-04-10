@@ -6,6 +6,7 @@
 	"files.insertFinalNewline": true,
 	"javascript.format.semicolons": "insert",
 	"javascript.preferences.importModuleSpecifierEnding": "js",
+	"editor.defaultFormatter": null,
 	"prettier.enable": false,
 	"prettier.requireConfig": true,
 	"prettier.useTabs": true,
