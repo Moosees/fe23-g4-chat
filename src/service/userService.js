@@ -1,7 +1,7 @@
 import User from '../model/userModel.js';
 
-const registerUser = async (name, userName, passwordHash) => {
-	return await User.create({ name, userName, passwordHash });
+const registerUser = async (senderName, userName, passwordHash) => {
+	return await User.create({ senderName, userName, passwordHash });
 };
 
 const getUserByUserName = async (userName) => {

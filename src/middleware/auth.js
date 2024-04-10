@@ -4,9 +4,12 @@ import { verifyToken } from "../utils/jwt.js";
 export const verifyUser = async (req, res, next) => {
 	const authHeader = req.headers.authorization;
 	if (!authHeader || !authHeader.startsWith("Bearer ")) {
-		// anonymous user stuff goes here - add and use senderName to user object
+		const { senderName } = req.body;
+
 		res.locals.anonymous = true;
-		res.locals.user = {};
+		res.locals.user = {
+			senderName: senderName || 'Anonymous'
+		};
 
 		return next();
 	}
