@@ -17,7 +17,7 @@ const server = createServer(app);
 app.use(express.json());
 
 /**** socket.io ****/
-const io = new Server(server);
+export const io = new Server(server);
 
 io.on('connection', socket => {
 	console.log(`User ${socket.id} connected`);
@@ -29,10 +29,10 @@ io.on('connection', socket => {
 	socket.broadcast.emit('message', `User ${socket.id.substring(0, 5)} connected`);
 
 	//listening for a message event
-	socket.on('message', data => {
-		console.log(data);
-		io.emit('message', `${socket.id.substring(0, 5)} : ${data}`);
-	});
+	// socket.on('message', data => {
+	// 	console.log(data);
+	// 	io.emit('message', `${socket.id.substring(0, 5)} : ${data}`);
+	// });
 
 	//listening for disconnect
 	socket.on('disconnect', () => {

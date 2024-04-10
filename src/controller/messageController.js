@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
-import xss from 'xss';
 import sanitizeHtml from 'sanitize-html';
+import xss from 'xss';
+import { io } from "../../index.js";
 import ChannelService from "../service/channelService.js";
 import MessageService from "../service/messageService.js";
 
@@ -45,7 +46,9 @@ const postMsgToChannel = async (req, res) => {
 		} else {
 			// If senderName is not provided, return 400 error
 			if (!senderName) return res.status(400).send({ error: "Name is required" });
-			await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, channel._id);
+			const dbRes = await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, channel._id);
+
+			io.emit('message', { senderName: dbRes.senderName, body: dbRes.body, sentAt: dbRes.sentAt });
 		}
 
 		res.status(200).send();
@@ -116,11 +119,13 @@ const postMsgToBroadcast = async (req, res) => {
 		});
 		const cleanedSenderName = sanitizeHtml(sanitizedSenderName);
 
-		await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, broadcastChannel._id);
+		const dbRes = await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, broadcastChannel._id);
 
+		io.emit('message', { senderName: dbRes.senderName, body: dbRes.body, sentAt: dbRes.sentAt });
 		// Sending success response
 		res.status(201).send();
 	} catch (error) {
+		console.log(error);
 		// Handling errors and sending 500 error
 		res.status(500).send({ error: "Server error" });
 	}
