@@ -1,9 +1,9 @@
 import { validationResult } from "express-validator";
 import sanitizeHtml from 'sanitize-html';
 import xss from 'xss';
-import { io } from "../../index.js";
 import ChannelService from "../service/channelService.js";
 import MessageService from "../service/messageService.js";
+import { getIo } from "../utils/socket.js";
 
 // Configuration for sanitize-html to disallow formatting tags
 const htmlSanitizeOptions = {
@@ -48,7 +48,7 @@ const postMsgToChannel = async (req, res) => {
 			if (!senderName) return res.status(400).send({ error: "Name is required" });
 			const dbRes = await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, channel._id);
 
-			io.emit('message', { senderName: dbRes.senderName, body: dbRes.body, sentAt: dbRes.sentAt });
+			getIo().emit('message', { senderName: dbRes.senderName, body: dbRes.body, sentAt: dbRes.sentAt });
 		}
 
 		res.status(200).send();
@@ -121,7 +121,7 @@ const postMsgToBroadcast = async (req, res) => {
 
 		const dbRes = await MessageService.addNewMessage(cleanedMsg, cleanedSenderName, userId, broadcastChannel._id);
 
-		io.emit('message', { senderName: dbRes.senderName, body: dbRes.body, sentAt: dbRes.sentAt });
+		getIo().emit('message', { senderName: dbRes.senderName, body: dbRes.body, sentAt: dbRes.sentAt });
 		// Sending success response
 		res.status(201).send();
 	} catch (error) {

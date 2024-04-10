@@ -1,5 +1,4 @@
-// test axios and socket
-console.log({ io, axios });
+// socket global variable
 const socket = io('ws://localhost:3000');
 
 // static elements
@@ -46,6 +45,10 @@ async function handleSubmit(event) {
 	}
 }
 
+// Add event listener to the form submission event
+messageForm.addEventListener('submit', handleSubmit);
+
+// append a message to the chat history
 function createMessageElement(message) {
 	const messageElement = document.createElement('div');
 	messageElement.classList.add('message');
@@ -85,9 +88,6 @@ async function fetchMessages() {
 
 // Fetch messages when the page loads
 fetchMessages();
-
-// Add event listener to the form submission event
-messageForm.addEventListener('submit', handleSubmit);
 
 // get messages from socket
 socket.on("message", (data) => {

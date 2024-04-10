@@ -8,10 +8,6 @@ const getUserByUserName = async (userName) => {
 	return await User.findOne({ userName });
 };
 
-// const loginUser = async (userName, passwordHash) => {
-// 	return await User.findOne({ userName, passwordHash });
-// };
-
 const UserService = { registerUser, getUserByUserName, };
 
 export default UserService;
