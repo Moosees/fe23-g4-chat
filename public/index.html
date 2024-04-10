@@ -11,6 +11,9 @@
 	<!-- Axios -->
 	<script src="axios" defer></script>
 
+	<!-- Login script -->
+	<script src="js/loginScript.js" defer></script>
+
 	<!-- WEBSOCKETS THINGYS -->
 	<!-- styles -->
 	<link type="text/css" href="style.css" rel="stylesheet">
@@ -29,6 +32,19 @@
 </head>
 
 <body>
+	<!-- Section for user login -->
+	<section id="login">
+		<h2>Login</h2>
+		<form id="login-form">
+			<label for="login-username">Username:</label>
+			<input type="text" id="login-username" name="login-username" required>
+			<label for="login-password">Password:</label>
+			<input type="password" id="login-password" name="login-password" required>
+			<button type="submit">Login</button>
+		</form>
+	</section>
+
+
 	<section id="WEBSOCKETS">
 		<form>
 			<input type="text" placeholder="Your message" />
