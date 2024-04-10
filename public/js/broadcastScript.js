@@ -99,8 +99,16 @@ socket.on("message", (data) => {
 });
 
 // activity (xyz is typing...)
+let keypressPaused;
 messageInput.addEventListener('keypress', () => {
-	socket.emit('activity', socket.id.substring(0, 5));
+	if (keypressPaused) return;
+
+	keypressPaused = true;
+	socket.emit('activity', senderNameInput.value);
+
+	setTimeout(() => {
+		keypressPaused = false;
+	}, 3000);
 });
 
 let activityTimer;
@@ -108,7 +116,7 @@ socket.on('activity', (name) => {
 	activity.textContent = `😎 ${name} is typing ... `;
 
 	//clear after 3 sec...
-	clearTimeout(activityTimer);
+	if (activityTimer) clearTimeout(activityTimer);
 	activityTimer = setTimeout(() => {
 		activity.textContent = "";
 	}, 3000);
