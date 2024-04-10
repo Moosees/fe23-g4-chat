@@ -7,9 +7,11 @@ Users can create channels, join existing channels, send messages in a real-time 
 
 **Clone the Repository**
 
-```bash
-git clone https://github.com/Moosees/fe23-g4-chat.git
-```
+- [Guide to clone a repository](https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories)
+
+Go to https://github.com/Moosees/fe23-g4-chat.git and click the <>Code button to start the cloning.
+> ![<>Code](/public/assets/codebtn.png) 
+
 
 **Install Dependencies:**
 ```bash
@@ -19,6 +21,12 @@ npm install
 **MongoDB**
 
 Create a database in `MongoDB Atlas` and then create a `.env` file to ad your connection to the database and also your JWT secret.
+
+.env example:
+```
+MONGODB_URI=mongodb://localhost:27017/chatdb
+JWT_SECRET=your_jwt_secret_key_here
+```
 
 **Start the server**
 
