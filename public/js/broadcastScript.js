@@ -19,25 +19,15 @@ async function handleSubmit(event) {
 
 	try {
 		// Send a POST request to the backend API with message data
-		const response = await fetch('/api/broadcast', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				senderName: senderNameInput.value,
-				msg: messageInput.value
-			})
+		const response = await axios.post('/api/broadcast', {
+			senderName: senderNameInput.value,
+			msg: messageInput.value
 		});
 
 		// Check if the request was successful
-		if (response.ok) {
+		if (response.status === 200) {
 			// Clear form fields after successful submission
-			senderNameInput.value = '';
 			messageInput.value = '';
-		} else {
-			// Log an error message if the request was not successful
-			console.error('Failed to post message:', response.statusText);
 		}
 	} catch (error) {
 		// Log an error message if there was an error during the request
@@ -65,20 +55,18 @@ function createMessageElement(message) {
 async function fetchMessages() {
 	try {
 		// Send a GET request to retrieve messages from the backend
-		const response = await fetch('/api/broadcast');
-		// Parse the JSON response into a JavaScript object
-		const messages = await response.json();
+		const { data } = await axios.get('/api/broadcast');
 
 		// Clear the existing messages displayed in the container
 		messagesContainer.innerHTML = '';
 
 		// Check if there are any messages available
-		if (messages.length === 0) {
+		if (data.length === 0) {
 			// Display a message indicating that no messages are found
 			messagesContainer.innerHTML = '<p>No messages found</p>';
 		} else {
 			// Iterate through each message and create HTML elements to display them
-			messages.forEach(createMessageElement);
+			data.forEach(createMessageElement);
 		}
 	} catch (error) {
 		// Log an error message if there was an error fetching messages

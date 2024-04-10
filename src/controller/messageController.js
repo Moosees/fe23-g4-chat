@@ -15,6 +15,7 @@ const htmlSanitizeOptions = {
 
 // Controller function to post a message to a specific channel
 const postMsgToChannel = async (req, res) => {
+	console.log(req.body, res.locals)
 	const { msg } = req.body;
 	if (!msg) return res.status(400).json({ error: 'Message cannot be empty' }); // empty message
 
@@ -78,7 +79,7 @@ const getMessagesByChannel = async (req, res) => {
 			return res.status(200).json({ message: errorMessage });
 		}
 
-		res.json(sanitizedMessages);
+		res.status(200).json(sanitizedMessages);
 	} catch (error) {
 		console.error("Error retrieving messages by channel:", error);
 		res.status(500).send({ error: "Server error" });

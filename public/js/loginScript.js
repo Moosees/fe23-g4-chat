@@ -12,7 +12,8 @@ const handleLogin = async (e) => {
 
 		// If login is successful, display a success message
 		if (response.status === 200) {
-			console.log(response.data.token);
+			const token = response.data.token;
+			axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 			alert('Login successful');
 			// Redirect or perform any other actions upon successful login
 		}

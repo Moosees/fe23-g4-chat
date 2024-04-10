@@ -19,7 +19,6 @@ export const verifyUser = async (req, res, next) => {
 		const { userName } = verifyToken(token);
 
 		const user = await UserService.getUserByUserName(userName);
-
 		if (!user) return res.status(400).json({ error: 'User not found' });
 
 		res.locals.anonymous = false;
