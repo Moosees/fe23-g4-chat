@@ -5,9 +5,13 @@ const registerUser = async (senderName, userName, passwordHash) => {
 };
 
 const getUserByUserName = async (userName) => {
-	return await User.findOne({ userName });
+	return await User.findOne({ userName }).select('userName senderName');
 };
 
-const UserService = { registerUser, getUserByUserName, };
+const getUserPasswordHash = async (userName) => {
+	return await User.findOne({ userName }).select('passwordHash');
+};
+
+const UserService = { registerUser, getUserByUserName, getUserPasswordHash };
 
 export default UserService;

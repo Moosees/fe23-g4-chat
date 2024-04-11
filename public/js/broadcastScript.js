@@ -1,6 +1,6 @@
 // channel switcher for debugging
-// const channelAddress = '/api/channel/newtest';
-const channelAddress = '/api/broadcast';
+const channelAddress = '/api/channel/newtest';
+// const channelAddress = '/api/broadcast';
 
 // socket global variable
 const socket = io('ws://localhost:3000');
