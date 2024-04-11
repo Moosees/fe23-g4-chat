@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema({
-	senderName: String,
-	userName: { type: String, unique: true },
+	senderName: { type: String, trim: true, default: 'Unnamed user' },
+	userName: { type: String, trim: true, lowercase: true, unique: true },
 	passwordHash: String,
 	created: { type: Date, default: Date.now }
 });
