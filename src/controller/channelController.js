@@ -37,11 +37,11 @@ const getAllChannels = async (req, res) => {
 };
 
 const deleteChannel = async (req, res) => {
-	const { channelName } = res.locals
+	const channelName = req.params.channelName;
 	const userId = res.locals.user._id;
 
 	// Add better safety for broadcast channel
-	if (channelName.length < 4 || channelName === 'broadcast') return res.status(400).send();
+	if (!channelName || channelName.length < 4 || channelName === 'broadcast') return res.status(400).send();
 
 	try {
 		const channel = await ChannelService.getChannelByName(channelName);

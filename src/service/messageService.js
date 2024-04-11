@@ -11,8 +11,8 @@ const getMessagesByChannelId = async (channel) => {
 };
 
 // delete all messages sent in a specific channel
-const deleteAllMessageInChannel = async (channelId) => {
-	const result = await Message.deleteMany({ channelId });
+const deleteAllMessageInChannel = async (channel) => {
+	const result = await Message.deleteMany({ channel });
 
 	if (!result.acknowledged) throw new Error('something went wrong');
 };
