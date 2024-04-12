@@ -13,8 +13,15 @@ const handleLogin = async (e) => {
 		// If login is successful, display a success message
 		if (response.status === 200) {
 			const token = response.data.token;
+
+
+			// Save the token in session storage
+			sessionStorage.setItem('token', token);
+
 			axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 			alert('Login successful');
+
+
 
 			// refetch messages
 			fetchMessages();
