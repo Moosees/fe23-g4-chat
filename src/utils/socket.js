@@ -7,7 +7,7 @@ export const setupSockets = (server) => {
 	io = new Server(server);
 
 	io.on('connection', socket => {
-		console.log(`User ${socket.id} connected`);
+		console.log(`User ${socket.id.substring(0, 5)} connected`);
 
 		//upon connection - only to user
 		// socket.emit('welcome', "Welcome to Chat App!👋");
@@ -23,13 +23,13 @@ export const setupSockets = (server) => {
 
 		//listening for disconnect
 		socket.on('disconnect', () => {
-			console.log('user is disconnected');
+			console.log(`User ${socket.id.substring(0, 5)} disconnected`);
 			// socket.broadcast.emit('disconnect', `User ${socket.id.substring(0, 5)} disconnected`);
 		});
 
 		//listen for activity and broadcast to everyone else
 		socket.on('activity', (name) => {
-			socket.broadcast.emit('activity', name);
+			socket.broadcast.emit('activity', name || 'Anonymous');
 		});
 	});
 };
