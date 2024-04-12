@@ -81,7 +81,7 @@ Open your web browser and navigate to `http://localhost:3000`.
 - DELETE - /api/channel/:channelName
   - Deletes a channel and all its messages.
 
-## Technologies Used**
+## Technologies Used
 
 - [Node.js](https://nodejs.org/en)
 - [Express.js](https://expressjs.com/)
