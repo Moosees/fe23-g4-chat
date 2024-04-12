@@ -7,7 +7,7 @@ const publicRoutes = Router();
 publicRoutes.get('/broadcast', MessageController.getMessagesByChannel);
 publicRoutes.get('/channel/broadcast', MessageController.getMessagesByChannel);
 
-// post message to broadcast (public) channel - body: { msg, senderName }
+// post message to broadcast (public) channel - body: { msg, senderName (optional) }
 publicRoutes.post('/broadcast', MessageController.postMsgToChannel);
 publicRoutes.post('/channel/broadcast', MessageController.postMsgToChannel);
 
