@@ -24,7 +24,7 @@ const postMsgToChannel = async (req, res) => {
 	try {
 		const channel = await ChannelService.getChannelByName(channelName);
 
-		if (!channel) return res.status(404).send();
+		if (!channel) return res.status(404).send({ error: 'Channel not found' });
 
 		// XSS protection using xss library
 		const sanitizedMsg = xss(msg);
@@ -42,9 +42,9 @@ const postMsgToChannel = async (req, res) => {
 		// send message to all clients chat history
 		getIo().emit('message', { senderName: dbRes.senderName, body: dbRes.body, sentAt: dbRes.sentAt });
 
-		res.status(200).send();
+		res.status(200).send({ message: "Message has been sent" });
 	} catch (error) {
-		res.status(400).send();
+		res.status(400).send({ error: "Something broke" });
 	}
 };
 

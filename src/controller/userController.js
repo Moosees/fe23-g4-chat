@@ -12,10 +12,10 @@ const registerUser = async (req, res) => {
 		const passwordHash = await bcrypt.hash(password, 10);
 		await UserService.registerUser(senderName, userName, passwordHash);
 
-		res.status(201).send({ token: createToken(userName) });
+		res.status(201).send({ message: "Register successful", token: createToken(userName) });
 	} catch (error) {
 		if (error.code === 11000) return res.status(400).send({ error: "Username is taken, please select another one" });
-		res.status(500).json({ error: "Something broke" });
+		res.status(500).json({ error: "Server error" });
 	}
 };
 
@@ -38,7 +38,7 @@ const loginUser = async (req, res) => {
 		res.status(200).json({ message: "Login successful", token: createToken(userName) });
 	} catch (error) {
 		console.error("Error logging in:", error);
-		res.status(500).json({ error: "Something broke" });
+		res.status(500).json({ error: "Server error" });
 	}
 };
 
