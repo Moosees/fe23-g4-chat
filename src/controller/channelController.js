@@ -13,10 +13,10 @@ const createChannel = async (req, res) => {
 
 	try {
 		await ChannelService.createChannel(sanitizedName, sanitizedDescription, ownerId);
-		res.status(201).send();
+		res.status(201).send({ message: `Channel ${sanitizedName} has been created.` });
 	} catch (error) {
 		if (error.code === 11000) return res.status(400).send({ error: "Channel already exists" });
-		res.status(500).json({ error: "Something broke" });
+		res.status(500).json({ error: "Server error" });
 	}
 };
 
@@ -32,7 +32,7 @@ const getAllChannels = async (req, res) => {
 
 		res.json(sanitizedChannels);
 	} catch (error) {
-		res.status(500).send();
+		res.status(500).send({ error: "Server error" });
 	}
 };
 
@@ -50,14 +50,17 @@ const deleteChannel = async (req, res) => {
 
 		if (!channel.owner.equals(userId)) return res.status(403).json({ error: "You are not authorized to delete this channel" });
 
+		// Save the name of the channel before deleting
+		const deletedChannelName = channel.name;
+
 		// use transaction? https://www.mongodb.com/docs/manual/core/transactions/
 		await ChannelService.deleteChannelById(channel._id);
 		await MessageService.deleteAllMessageInChannel(channel._id);
 
-		res.status(200).send();
+		res.status(200).send({ message: `Channel ${deletedChannelName} has been deleted.` });
 	} catch (error) {
 		console.log(error);
-		res.status(500).send();
+		res.status(500).send({ error: "Server error" });
 	}
 };
 
